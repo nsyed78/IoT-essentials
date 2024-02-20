@@ -1,25 +1,12 @@
-from pyA20.gpio import gpio
-from pyA20.gpio import port
-import time
+import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
+from time import sleep # Import the sleep function from the time module
 
-# Initialize the gpio module
-gpio.init()
+GPIO.setwarnings(False) # Ignore warning for now
+GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
+GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW) # Set pin 8 to be an output pin and set initial value to low (off)
 
-# Setup the pin PA7 as an output
-led_pin = port.PA7
-gpio.setcfg(led_pin, gpio.OUTPUT)
-
-try:
-    while True:
-        # Turn the LED on
-        gpio.output(led_pin, 1)
-        # Wait for one second
-        time.sleep(1)
-        # Turn the LED off
-        gpio.output(led_pin, 0)
-        # Wait for one second
-        time.sleep(1)
-except KeyboardInterrupt:
-    # Cleanup
-    gpio.output(led_pin, 0)  # Make sure we turn off the LED
-    gpio.cleanup()  # Release resources
+while True: # Run forever
+ GPIO.output(8, GPIO.HIGH) # Turn on
+ sleep(1) # Sleep for 1 second
+ GPIO.output(8, GPIO.LOW) # Turn off
+ sleep(1) # Sleep for 1 second
